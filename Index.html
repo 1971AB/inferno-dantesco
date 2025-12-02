@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Inferno dantesco</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at center, #2b0000, #0b0b0d);
+      color: #f5f5f5;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(180deg, #400000, #0b0b0d);
+      border-bottom: 2px solid #b22222;
+    }
+    h1 { margin: 0; font-size: 28px; color: #ffcc00; }
+    header p { margin: 4px 0 0; font-size: 16px; color: #b22222; }
+    .container { padding: 16px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      background: #1a0f0f;
+      border: 1px solid #660000;
+      border-radius: 8px;
+      color: #ffcc00;
+      font-size: 14px;
+    }
+    .tab.active { background: #660000; }
+    .panel { background: #1a0f0f; border: 1px solid #660000; border-radius: 8px; padding: 12px; margin-bottom: 16px; }
+    h2 { font-size: 20px; color: #ffcc00; }
+    .grid { display: grid; gap: 10px; }
+    @media (min-width: 600px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+    .card { background: #330000; border: 1px solid #660000; border-radius: 8px; padding: 10px; }
+    .card h3 { margin: 0 0 6px; font-size: 16px; color: #ffcc00; }
+    .btn { background: #660000; border: 1px solid #ffcc00; color: #ffcc00; padding: 8px; border-radius: 6px; font-size: 14px; }
+    .btn.primary { background: #ffcc00; color: #000; }
+    .choices { display: grid; gap: 6px; margin: 10px 0; }
+    .choice { padding: 8px; border-radius: 6px; border: 1px solid #660000; background: #2a0000; font-size: 14px; }
+    .choice.correct { border-color: green; background: rgba(0,255,0,.1); }
+    .choice.wrong { border-color: red; background: rgba(255,0,0,.1); }
+    .footer { padding: 12px; font-size: 12px; text-align: center; color: #c0c0c0; border-top: 1px solid #b22222; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Inferno dantesco</h1>
+    <p>prof.ssa Antonella Magurno</p>
+  </header>
+
+  <div class="container">
+    <!-- Tabs -->
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="home">Home</div>
+      <div class="tab" data-tab="mappa">Mappa</div>
+      <div class="tab" data-tab="quiz">Quiz</div>
+      <div class="tab" data-tab="creativa">Creativa</div>
+    </div>
+
+    <!-- Home -->
+    <div id="home" class="panel">
+      <h2>Obiettivi</h2>
+      <p>Esplora la struttura dell’Inferno, rispondi al quiz e inventa un nuovo cerchio.</p>
+      <button class="btn primary" data-tab-jump="mappa">Vai alla mappa</button>
+    </div>
+
+    <!-- Mappa -->
+    <div id="mappa" class="panel hidden">
+      <h2>I nove cerchi</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>Primo cerchio – Limbo</h3><p>Bambini e giusti senza battesimo</p><p>Pena: sospiri, “sanza speme”</p><p>Personaggi: Omero</p></div>
+        <div class="card"><h3>Secondo cerchio – Lussuriosi</h3><p>Peccatori carnali</p><p>Pena: bufera infernale</p><p>Personaggi: Francesca da Rimini</p></div>
+        <div class="card"><h3>Terzo cerchio – Golosi</h3><p>Golosi</p><p>Pena: tormentati da Cerbero</p><p>Personaggi: Ciacco</p></div>
+        <div class="card"><h3>Quarto cerchio – Avari e prodighi</h3><p>Pena: spingono pesi insultandosi</p></div>
+        <div class="card"><h3>Quinto cerchio – Iracondi e accidiosi</h3><p>Pena: iracondi nello Stige, accidiosi immersi</p></div>
+        <div class="card"><h3>Sesto cerchio – Eretici</h3><p>Pena: sepolcri infuocati</p><p>Personaggi: Farinata degli Uberti</p></div>
+        <div class="card"><h3>Settimo cerchio – Violenti</h3><p>Pene: sangue bollente, piante tormentate, pioggia di fuoco</p></div>
+        <div class="card"><h3>Ottavo cerchio – Malebolge</h3><p>Pene: varie (frustati, sterco, buche, pece, serpenti, fiamme, mutilazioni)</p></div>
+        <div class="card"><h3>Nono cerchio – Traditori</h3><p>Pena: ghiaccio</p><p>Centro: Lucifero con Giuda, Bruto, Cassio</p></div>
+      </div>
+      <button id="markMappaDone" class="btn">Segna completata</button>
+    </div>
+
+    <!-- Quiz -->
+    <div id="quiz" class="panel hidden">
+      <h2>Quiz a tappe</h2>
+      <div id="quizArea"></div>
+      <button id="restartQuiz" class="btn">Ricomincia quiz</button>
+    </div>
+
+    <!-- Creativa -->
+    <div id="creativa" class="panel hidden">
+      <h2>Sfida creativa</h2>
+      <input type="text" id="newCircleTitle" placeholder="Titolo"/>
+      <input type="text" id="newCircleSin" placeholder="Peccato"/>
+      <textarea id="newCirclePunishment" placeholder="Pena"></textarea>
+      <textarea id="newCircleRationale" placeholder="Contrappasso"></textarea>
+      <button id="submitCircle" class="btn primary">Invia</button>
+      <div id="circleBoard"></div>
+    </div>
+  </div>
+
+  <div class="footer">Creato per attività didattiche su Dante – Inferno</div>
+
+  <script>
+    // Tabs
+    const views = ["home","mappa","quiz","creativa"];
+    document.getElementById("tabs").addEventListener("click", e=>{
+      const t=e.target.closest(".tab"); if(!t) return;
