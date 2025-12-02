@@ -2,49 +2,142 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inferno dantesco</title>
   <style>
+    :root {
+      --bg: #0b0b0d;
+      --panel: #1a0f0f;
+      --accent: #b22222;
+      --accent2: #ffcc00;
+      --text: #f5f5f5;
+      --muted: #c0c0c0;
+      --green: #06d6a0;
+    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: radial-gradient(circle at center, #2b0000, #0b0b0d);
-      color: #f5f5f5;
+      color: var(--text);
     }
     header {
-      padding: 20px;
+      padding: 40px 24px;
       text-align: center;
+      border-bottom: 2px solid var(--accent);
       background: linear-gradient(180deg, #400000, #0b0b0d);
-      border-bottom: 2px solid #b22222;
     }
-    h1 { margin: 0; font-size: 28px; color: #ffcc00; }
-    header p { margin: 4px 0 0; font-size: 16px; color: #b22222; }
-    .container { padding: 16px; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    h1 { margin: 0; font-size: 44px; color: var(--accent2); text-shadow: 2px 2px 6px #000; }
+    header p { margin: 8px 0 0; font-size: 20px; color: var(--accent); text-shadow: 1px 1px 4px #000; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
     .tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      background: #1a0f0f;
+      background: var(--panel);
       border: 1px solid #660000;
-      border-radius: 8px;
-      color: #ffcc00;
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--accent2);
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select: none;
+    }
+    .tab:hover { transform: translateY(-2px); background: #330000; }
+    .tab.active { background: #660000; border-color: var(--accent2); }
+
+    .progress { display: flex; align-items: center; gap: 12px; margin: 16px 0 24px; }
+    .bar { flex: 1; height: 12px; background: #330000; border-radius: 999px; overflow: hidden; border: 1px solid #550000; }
+    .bar > div { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .4s ease; }
+    .pill { padding: 6px 10px; background: #330000; border: 1px solid #550000; border-radius: 999px; color: var(--accent2); font-size: 14px; }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid #660000;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 12px rgba(255,0,0,0.25);
+    }
+    h2 { margin-top: 0; font-size: 28px; color: var(--accent2); text-shadow: 1px 1px 4px #000; }
+
+    .grid { display: grid; gap: 12px; }
+    @media (min-width: 800px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .card {
+      background: #330000;
+      border: 1px solid #660000;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 20px; color: var(--accent2); }
+    .meta { color: var(--muted); font-size: 13px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #660000;
+      border: 1px solid var(--accent2);
+      color: var(--accent2);
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s ease, transform .06s ease;
+      user-select: none;
+    }
+    .btn:hover { background: #990000; }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: var(--accent2); border-color: #ffc400; color: #000; }
+    .btn.ghost { background: transparent; border-color: #660000; color: var(--accent2); }
+
+    .choices { display: grid; gap: 8px; margin: 12px 0; }
+    .choice {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #660000;
+      background: #2a0000;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .choice:hover { border-color: #990000; background: #330000; }
+    .choice.correct { border-color: var(--green); background: rgba(6,214,160,.12); }
+    .choice.wrong { border-color: var(--accent); background: rgba(178,34,34,.18); }
+
+    .notice {
+      padding: 10px;
+      border-radius: 10px;
+      background: #2a0000;
+      border: 1px solid #660000;
+      color: var(--muted);
       font-size: 14px;
     }
-    .tab.active { background: #660000; }
-    .panel { background: #1a0f0f; border: 1px solid #660000; border-radius: 8px; padding: 12px; margin-bottom: 16px; }
-    h2 { font-size: 20px; color: #ffcc00; }
-    .grid { display: grid; gap: 10px; }
-    @media (min-width: 600px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
-    .card { background: #330000; border: 1px solid #660000; border-radius: 8px; padding: 10px; }
-    .card h3 { margin: 0 0 6px; font-size: 16px; color: #ffcc00; }
-    .btn { background: #660000; border: 1px solid #ffcc00; color: #ffcc00; padding: 8px; border-radius: 6px; font-size: 14px; }
-    .btn.primary { background: #ffcc00; color: #000; }
-    .choices { display: grid; gap: 6px; margin: 10px 0; }
-    .choice { padding: 8px; border-radius: 6px; border: 1px solid #660000; background: #2a0000; font-size: 14px; }
-    .choice.correct { border-color: green; background: rgba(0,255,0,.1); }
-    .choice.wrong { border-color: red; background: rgba(255,0,0,.1); }
-    .footer { padding: 12px; font-size: 12px; text-align: center; color: #c0c0c0; border-top: 1px solid #b22222; }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #660000;
+      background: #2a0000;
+      color: var(--text);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+
+    .footer {
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 2px solid var(--accent);
+      background: #0b0b0d;
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -58,58 +151,390 @@
     <!-- Tabs -->
     <div class="tabs" id="tabs">
       <div class="tab active" data-tab="home">Home</div>
-      <div class="tab" data-tab="mappa">Mappa</div>
-      <div class="tab" data-tab="quiz">Quiz</div>
-      <div class="tab" data-tab="creativa">Creativa</div>
+      <div class="tab" data-tab="mappa">Mappa dei cerchi</div>
+      <div class="tab" data-tab="quiz">Quiz a tappe</div>
+      <div class="tab" data-tab="creativa">Sfida creativa</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress">
+      <div class="pill" id="progressLabel">Progresso: 0%</div>
+      <div class="bar"><div id="progressBar"></div></div>
+      <div class="pill" id="scoreLabel">Punteggio quiz: 0</div>
     </div>
 
     <!-- Home -->
     <div id="home" class="panel">
-      <h2>Obiettivi</h2>
-      <p>Esplora la struttura dell’Inferno, rispondi al quiz e inventa un nuovo cerchio.</p>
-      <button class="btn primary" data-tab-jump="mappa">Vai alla mappa</button>
+      <h2>Obiettivi dell’attività</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Comprensione</h3>
+          <p class="meta">Esplora la struttura dell’Inferno e i suoi protagonisti.</p>
+        </div>
+        <div class="card">
+          <h3>Memoria</h3>
+          <p class="meta">Rispondi al quiz di 9 domande (un cerchio per domanda).</p>
+        </div>
+        <div class="card">
+          <h3>Creatività</h3>
+          <p class="meta">Immagina un “nuovo cerchio” con pena e contrappasso.</p>
+        </div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px;">
+        <button class="btn primary" data-tab-jump="mappa">Vai alla mappa</button>
+        <button class="btn" data-tab-jump="quiz">Vai al quiz</button>
+      </div>
+      <p class="notice" style="margin-top:12px;">Completa la mappa, termina il quiz e invia una proposta creativa per raggiungere il 100%.</p>
     </div>
 
     <!-- Mappa -->
     <div id="mappa" class="panel hidden">
-      <h2>I nove cerchi</h2>
+      <h2>I nove cerchi dell’Inferno</h2>
       <div class="grid cols-3">
-        <div class="card"><h3>Primo cerchio – Limbo</h3><p>Bambini e giusti senza battesimo</p><p>Pena: sospiri, “sanza speme”</p><p>Personaggi: Omero</p></div>
-        <div class="card"><h3>Secondo cerchio – Lussuriosi</h3><p>Peccatori carnali</p><p>Pena: bufera infernale</p><p>Personaggi: Francesca da Rimini</p></div>
-        <div class="card"><h3>Terzo cerchio – Golosi</h3><p>Golosi</p><p>Pena: tormentati da Cerbero</p><p>Personaggi: Ciacco</p></div>
-        <div class="card"><h3>Quarto cerchio – Avari e prodighi</h3><p>Pena: spingono pesi insultandosi</p></div>
-        <div class="card"><h3>Quinto cerchio – Iracondi e accidiosi</h3><p>Pena: iracondi nello Stige, accidiosi immersi</p></div>
-        <div class="card"><h3>Sesto cerchio – Eretici</h3><p>Pena: sepolcri infuocati</p><p>Personaggi: Farinata degli Uberti</p></div>
-        <div class="card"><h3>Settimo cerchio – Violenti</h3><p>Pene: sangue bollente, piante tormentate, pioggia di fuoco</p></div>
-        <div class="card"><h3>Ottavo cerchio – Malebolge</h3><p>Pene: varie (frustati, sterco, buche, pece, serpenti, fiamme, mutilazioni)</p></div>
-        <div class="card"><h3>Nono cerchio – Traditori</h3><p>Pena: ghiaccio</p><p>Centro: Lucifero con Giuda, Bruto, Cassio</p></div>
+        <div class="card">
+          <h3>Primo cerchio – Limbo</h3>
+          <p><strong>Anime:</strong> Bambini e giusti senza battesimo</p>
+          <p><strong>Pena:</strong> Sospiri, “sanza speme” e “in desio”</p>
+          <p><strong>Personaggi:</strong> Omero</p>
+        </div>
+        <div class="card">
+          <h3>Secondo cerchio – Lussuriosi</h3>
+          <p><strong>Anime:</strong> Peccatori carnali</p>
+          <p><strong>Pena:</strong> Trascinati dalla bufera infernale</p>
+          <p><strong>Personaggi:</strong> Didone, Francesca da Rimini, Tristano</p>
+        </div>
+        <div class="card">
+          <h3>Terzo cerchio – Golosi</h3>
+          <p><strong>Anime:</strong> Golosi</p>
+          <p><strong>Pena:</strong> Giacciono per terra, morsi e scuoiati da Cerbero</p>
+          <p><strong>Personaggi:</strong> Ciacco</p>
+        </div>
+        <div class="card">
+          <h3>Quarto cerchio – Avari e prodighi</h3>
+          <p><strong>Anime:</strong> Avari e prodighi</p>
+          <p><strong>Pena:</strong> Spingono pesi in semicerchio insultandosi</p>
+          <p><strong>Personaggi:</strong> Chierici, papi e cardinali</p>
+        </div>
+        <div class="card">
+          <h3>Quinto cerchio – Iracondi e accidiosi</h3>
+          <p><strong>Anime:</strong> Iracondi e accidiosi</p>
+          <p><strong>Pena:</strong> Iracondi nel fango bollente dello Stige; accidiosi immersi nel fango</p>
+        </div>
+        <div class="card">
+          <h3>Sesto cerchio – Eretici</h3>
+          <p><strong>Anime:</strong> Eretici ed epicurei</p>
+          <p><strong>Pena:</strong> Sepolcri infuocati e scoperchiati</p>
+          <p><strong>Personaggi:</strong> Farinata degli Uberti, Cavalcante de’ Cavalcanti</p>
+        </div>
+        <div class="card">
+          <h3>Settimo cerchio – Violenti</h3>
+          <p><strong>Anime:</strong> Tiranni, omicidi, predoni; suicidi e scialacquatori; bestemmiatori, sodomiti, usurai</p>
+          <p><strong>Pene:</strong> Sangue bollente del Flegetonte; trasformati in piante e tormentati da Arpie; inseguiti e dilaniati da cagne; pioggia di fuoco</p>
+          <p><strong>Personaggi:</strong> Pier delle Vigne, Brunetto Latini</p>
+        </div>
+        <div class="card">
+          <h3>Ottavo cerchio – Malebolge</h3>
+          <p><strong>Anime:</strong> Fraudolenti (10 bolge)</p>
+          <p><strong>Pene:</strong> Frustati, immersi nello sterco, capovolti in buche con fiamme ai piedi, capo volto all’indietro, pece bollente, cappe di piombo dorate, serpenti e trasformazioni, avvolti dalle fiamme, mutilazioni, malattie</p>
+          <p><strong>Personaggi:</strong> Giasone, Bonifacio VIII, Tiresia, Vanni Fucci, Ulisse, Maometto</p>
+        </div>
+        <div class="card">
+          <h3>Nono cerchio – Traditori</h3>
+          <p><strong>Anime:</strong> Traditori di parenti, patria, ospiti, benefattori</p>
+          <p><strong>Pena:</strong> Immersi, stesi o coperti dal ghiaccio</p>
+          <p><strong>Centro della terra:</strong> Lucifero; Giuda, Bruto e Cassio</p>
+        </div>
       </div>
-      <button id="markMappaDone" class="btn">Segna completata</button>
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button id="markMappaDone" class="btn">Segna sezione completata</button>
+        <button class="btn ghost" data-tab-jump="quiz">Prossimo: Quiz</button>
+      </div>
     </div>
 
     <!-- Quiz -->
     <div id="quiz" class="panel hidden">
       <h2>Quiz a tappe</h2>
       <div id="quizArea"></div>
-      <button id="restartQuiz" class="btn">Ricomincia quiz</button>
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button id="restartQuiz" class="btn ghost">Ricomincia quiz</button>
+        <button class="btn" data-tab-jump="creativa">Prossimo: Sfida creativa</button>
+      </div>
     </div>
 
     <!-- Creativa -->
     <div id="creativa" class="panel hidden">
-      <h2>Sfida creativa</h2>
-      <input type="text" id="newCircleTitle" placeholder="Titolo"/>
-      <input type="text" id="newCircleSin" placeholder="Peccato"/>
-      <textarea id="newCirclePunishment" placeholder="Pena"></textarea>
-      <textarea id="newCircleRationale" placeholder="Contrappasso"></textarea>
-      <button id="submitCircle" class="btn primary">Invia</button>
-      <div id="circleBoard"></div>
+      <h2>Sfida creativa: inventa un nuovo cerchio</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Titolo del cerchio</h3>
+          <input type="text" id="newCircleTitle" placeholder="Es. I diffusori di fake news"/>
+        </div>
+        <div class="card">
+          <h3>Peccato moderno</h3>
+          <input type="text" id="newCircleSin" placeholder="Es. Manipolazione informativa"/>
+        </div>
+        <div class="card">
+          <h3>Pena immaginata</h3>
+          <textarea id="newCirclePunishment" placeholder="Descrivi la pena coerente e simbolica..."></textarea>
+        </div>
+        <div class="card">
+          <h3>Giustificazione morale</h3>
+          <textarea id="newCircleRationale" placeholder="Perché questa pena è “contrappasso”?"></textarea>
+        </div>
+      </div>
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button id="submitCircle" class="btn primary">Invia proposta</button>
+        <button id="markCreativaDone" class="btn ghost">Segna sezione completata</button>
+      </div>
+      <h2 style="margin-top:16px;">Proposte del gruppo</h2>
+      <div id="circleBoard" class="grid"></div>
     </div>
   </div>
 
-  <div class="footer">Creato per attività didattiche su Dante – Inferno</div>
+  <div class="footer">
+    Creato per attività didattiche su Dante – Inferno. Salvataggio locale sul tuo dispositivo.
+  </div>
 
   <script>
-    // Tabs
-    const views = ["home","mappa","quiz","creativa"];
-    document.getElementById("tabs").addEventListener("click", e=>{
-      const t=e.target.closest(".tab"); if(!t) return;
+    // ----- Stato -----
+    const STATE_KEY = "inferno_app_state_v3";
+    const defaultState = {
+      progress: { mappa: false, quiz: false, creativa: false },
+      score: 0,
+      quizIndex: 0,
+      quizAnswered: [],
+      circles: []
+    };
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STATE_KEY);
+        return raw ? JSON.parse(raw) : { ...defaultState };
+      } catch {
+        return { ...defaultState };
+      }
+    }
+    function saveState() {
+      localStorage.setItem(STATE_KEY, JSON.stringify(state));
+      updateProgressUI();
+    }
+
+    // ----- Tabs -----
+    const views = ["home", "mappa", "quiz", "creativa"];
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const t = e.target.closest(".tab");
+      if (!t) return;
+      setActiveTab(t.getAttribute("data-tab"));
+    });
+    document.querySelectorAll("[data-tab-jump]").forEach(btn => {
+      btn.addEventListener("click", () => setActiveTab(btn.getAttribute("data-tab-jump")));
+    });
+    function setActiveTab(id) {
+      document.querySelectorAll(".tab").forEach(el => el.classList.toggle("active", el.getAttribute("data-tab") === id));
+      views.forEach(v => document.getElementById(v).classList.toggle("hidden", v !== id));
+    }
+
+    // ----- Progresso -----
+    function updateProgressUI() {
+      const doneCount = Object.values(state.progress).filter(Boolean).length;
+      const pct = Math.round((doneCount / Object.keys(state.progress).length) * 100);
+      document.getElementById("progressLabel").textContent = `Progresso: ${pct}%`;
+      document.getElementById("progressBar").style.width = pct + "%";
+      document.getElementById("scoreLabel").textContent = `Punteggio quiz: ${state.score}`;
+    }
+    updateProgressUI();
+
+    // ----- Mappa -----
+    document.getElementById("markMappaDone").addEventListener("click", () => {
+      state.progress.mappa = true;
+      saveState();
+      alert("Sezione mappa segnata come completata.");
+    });
+
+    // ----- Quiz (9 domande, un cerchio per domanda) -----
+    const quizData = [
+      { q: "Chi si trova nel Limbo e qual è la loro pena?", choices: [
+        "Golosi; tormentati da Cerbero",
+        "Bambini e giusti senza battesimo; vivono 'sanza speme'",
+        "Traditori; immersi nel ghiaccio"
+      ], answer: 1, explain: "Nel Limbo: bambini e giusti senza battesimo, vivono senza speranza." },
+
+      { q: "Qual è la pena dei lussuriosi nel Secondo cerchio?", choices: [
+        "Sepolcri infuocati e scoperchiati",
+        "Bufera infernale che trascina senza posa",
+        "Sangue bollente del Flegetonte"
+      ], answer: 1, explain: "I peccatori carnali sono trascinati dalla bufera infernale." },
+
+      { q: "Chi tormenta i golosi e come?", choices: [
+        "Cerbero li morde e scuoia mentre giacciono nella fanghiglia",
+        "Minotauro li incalza sulla sabbia infuocata",
+        "Diavoli li frustano nudi"
+      ], answer: 0, explain: "Cerbero tortura i golosi mentre giacciono a terra." },
+
+      { q: "Cosa fanno in eterno avari e prodighi nel Quarto cerchio?", choices: [
+        "Spingono pesi in semicerchio insultandosi",
+        "Camminano con cappe di piombo dorate",
+        "Sono capovolti in buche con le fiamme ai piedi"
+      ], answer: 0, explain: "Spingono pesi e si ingiuriano quando si incontrano." },
+
+      { q: "Dove si trovano iracondi e accidiosi e come soffrono?", choices: [
+        "Stige: iracondi nel fango bollente; accidiosi immersi",
+        "Cocito: tutti nel ghiaccio",
+        "Flegetonte: immersi nel sangue"
+      ], answer: 0, explain: "Nello Stige, iracondi nel fango bollente, accidiosi immersi." },
+
+      { q: "Qual è la pena degli eretici nel Sesto cerchio?", choices: [
+        "Testa rivolta all’indietro",
+        "Sepolcri infuocati e scoperchiati",
+        "Pece bollente"
+      ], answer: 1, explain: "Gli eretici ed epicurei giacciono in sepolcri infuocati." },
+
+      { q: "Dove sono immersi tiranni e omicidi nel Settimo cerchio?", choices: [
+        "Nel sangue bollente del Flegetonte",
+        "Nella pece bollente",
+        "Nello sterco"
+      ], answer: 0, explain: "Nel primo girone del Settimo cerchio: sangue bollente." },
+
+      { q: "Qual è la pena degli indovini in Malebolge (Ottavo cerchio)?", choices: [
+        "Capo volto all’indietro mentre camminano",
+        "Capovolti in buche con fiamme ai piedi",
+        "Frustati da diavoli"
+      ], answer: 0, explain: "Gli indovini procedono col capo volto all’indietro." },
+
+      { q: "Chi è al centro della Terra e chi dilania nel Nono cerchio?", choices: [
+        "Cerbero; Paolo e Francesca",
+        "Lucifero; Giuda, Bruto e Cassio",
+        "Minosse; Tiresia e Ulisse"
+      ], answer: 1, explain: "Al centro c’è Lucifero; dilania Giuda, Bruto e Cassio." }
+    ];
+
+    const quizArea = document.getElementById("quizArea");
+
+    function renderQuiz() {
+      const idx = state.quizIndex;
+      if (idx >= quizData.length) {
+        state.progress.quiz = true;
+        saveState();
+        quizArea.innerHTML = `
+          <div class="card">
+            <h3>Quiz completato!</h3>
+            <p>Hai risposto a tutte le domande. Punteggio: <strong>${state.score}</strong> / ${quizData.length}</p>
+            <p class="meta">Puoi ricominciare o passare alla Sfida creativa.</p>
+          </div>
+        `;
+        return;
+      }
+      const item = quizData[idx];
+      quizArea.innerHTML = `
+        <div class="card">
+          <h3>Domanda ${idx + 1} di ${quizData.length}</h3>
+          <p>${item.q}</p>
+          <div class="choices" id="choices"></div>
+          <p id="quizFeedback" class="notice"></p>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button id="nextQuestion" class="btn" disabled>Prossima domanda</button>
+          </div>
+        </div>
+      `;
+      const choicesEl = document.getElementById("choices");
+      item.choices.forEach((c, i) => {
+        const opt = document.createElement("div");
+        opt.className = "choice";
+        opt.textContent = c;
+        opt.addEventListener("click", () => selectAnswer(i));
+        choicesEl.appendChild(opt);
+      });
+    }
+
+    function selectAnswer(i) {
+      const item = quizData[state.quizIndex];
+      const feedback = document.getElementById("quizFeedback");
+      const choiceEls = document.querySelectorAll(".choice");
+      choiceEls.forEach((el, idx) => {
+        el.style.pointerEvents = "none";
+        if (idx === item.answer) el.classList.add("correct");
+        else if (idx === i) el.classList.add("wrong");
+      });
+      const correct = i === item.answer;
+      feedback.textContent = (correct ? "Corretto! " : "Non esatto. ") + item.explain;
+      if (correct) state.score += 1;
+      state.quizAnswered[state.quizIndex] = { chosen: i, correct };
+      document.getElementById("nextQuestion").disabled = false;
+      saveState();
+    }
+
+    document.getElementById("quiz").addEventListener("click", (e) => {
+      if (e.target.id === "nextQuestion") {
+        state.quizIndex += 1;
+        saveState();
+        renderQuiz();
+      }
+    });
+
+    document.getElementById("restartQuiz").addEventListener("click", () => {
+      state.quizIndex = 0;
+      state.score = 0;
+      state.quizAnswered = [];
+      state.progress.quiz = false;
+      saveState();
+      renderQuiz();
+    });
+
+    renderQuiz();
+
+    // ----- Creativa -----
+    const circleBoard = document.getElementById("circleBoard");
+    function escapeHTML(s) {
+      return String(s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+    function renderCircles() {
+      circleBoard.innerHTML = "";
+      if (!state.circles.length) {
+        circleBoard.innerHTML = `<p class="meta">Nessuna proposta ancora. Invia la tua!</p>`;
+        return;
+      }
+      state.circles.forEach((c, i) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <h3>${i+1}. ${escapeHTML(c.title)}</h3>
+          <p><strong>Peccato:</strong> ${escapeHTML(c.sin)}</p>
+          <p><strong>Pena:</strong> ${escapeHTML(c.punishment)}</p>
+          <p class="meta"><strong>Contrappasso:</strong> ${escapeHTML(c.rationale)}</p>
+        `;
+        circleBoard.appendChild(div);
+      });
+    }
+    renderCircles();
+
+    document.getElementById("submitCircle").addEventListener("click", () => {
+      const title = document.getElementById("newCircleTitle").value.trim();
+      const sin = document.getElementById("newCircleSin").value.trim();
+      const punishment = document.getElementById("newCirclePunishment").value.trim();
+      const rationale = document.getElementById("newCircleRationale").value.trim();
+      if (!title || !sin || !punishment || !rationale) {
+        alert("Compila tutti i campi per inviare la proposta.");
+        return;
+      }
+      state.circles.push({ title, sin, punishment, rationale });
+      document.getElementById("newCircleTitle").value = "";
+      document.getElementById("newCircleSin").value = "";
+      document.getElementById("newCirclePunishment").value = "";
+      document.getElementById("newCircleRationale").value = "";
+      state.progress.creativa = true;
+      saveState();
+      renderCircles();
+    });
+
+    document.getElementById("markCreativaDone").addEventListener("click", () => {
+      state.progress.creativa = true;
+      saveState();
+    });
+
+    // ----- Init: hash -----
+    const hash = location.hash.replace("#", "");
+    if (views.includes(hash)) setActiveTab(hash);
+  </script>
+</body>
+</html>
